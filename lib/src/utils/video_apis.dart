@@ -44,9 +44,12 @@ class VideoApis {
       // );
 
       final List<VideoQalityUrls> list = [];
+
        for (int i = 0; i < jsonData.length; i++) {
         final String quality =
             (jsonData[i]['quality'] as String?)?.split('p').first ?? '0';
+         debugPrint('===== VIMEO API ERROR: ==========  ' + quality);
+
         final int? number = int.tryParse(quality);
         if (number != null && number != 0) {
           list.add(
