@@ -32,15 +32,34 @@ class VideoApis {
       final response = await _makeRequestHash(videoId, hash);
       final jsonData = jsonDecode(response.body)['request']['files']
           ['progressive'] as List<dynamic>;
-      final progressiveUrls = List.generate(
-        jsonData.length,
-        (index) => VideoQalityUrls(
-          quality: int.parse(
-            (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
-          ),
-          url: jsonData[index]['url'] as String,
-        ),
-      );
+
+      // final progressiveUrls = List.generate(
+      //   jsonData.length,
+      //   (index) => VideoQalityUrls(
+      //     quality: int.parse(
+      //       (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
+      //     ),
+      //     url: jsonData[index]['url'] as String,
+      //   ),
+      // );
+
+      final List<VideoQalityUrls> list = [];
+       for (int i = 0; i < jsonData.length; i++) {
+        final String quality =
+            (jsonData[i]['quality'] as String?)?.split('p').first ?? '0';
+        final int? number = int.tryParse(quality);
+        if (number != null && number != 0) {
+          list.add(
+            VideoQalityUrls(
+              quality: number,
+              url: jsonData[i]['url'] as String,
+            ),
+          );
+        }
+      }
+      final progressiveUrls = list ; 
+
+
       if (progressiveUrls.isEmpty) {
         final jsonRes =
             jsonDecode(response.body)['request']['files']['hls']['cdns'];
