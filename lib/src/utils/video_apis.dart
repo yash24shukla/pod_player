@@ -69,7 +69,7 @@ class VideoApis {
         for (final element in (jsonRes as Map).entries.toList()) {
           progressiveUrls.add(
             VideoQalityUrls(
-              quality: 720,
+              quality: 540,
               url: element.value['url'] as String,
             ),
           );
